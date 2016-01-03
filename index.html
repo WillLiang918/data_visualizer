@@ -11,7 +11,7 @@
   </head>
   <body>
 
-  <h3>X vs Y</h3>
+  <h3>Y vs X</h3>
 
   <b>CSV File</b><br>
   <input type="file" id="csvfile" accept=".csv"><br>
@@ -19,8 +19,17 @@
   <br>
 
   <b>Name</b><select class="col name"></select><br>
-  <b>X Column</b><select class="col xColumn"></select><br>
-  <b>Y Column</b><select class="col yColumn"></select><br>
+
+  <b>X Column</b><select class="col xColumn"></select>
+  <input type="radio" class="xColumn" name="xScale" value="linear" checked>Linear
+  <input type="radio" class="xColumn" name="xScale" value="log">Logarithmic
+  <br>
+
+  <b>Y Column</b><select class="col yColumn"></select>
+  <input type="radio" name="yScale" value="linear" checked>Linear
+  <input type="radio" name="yScale" value="log">Logarithmic
+  <br>
+
   <b>R Column</b><select class="col rColumn"></select><br>
 
   <br>

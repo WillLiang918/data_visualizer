@@ -27,6 +27,8 @@ function upload(evt) {
 
   $("#graphcsv").on("click", function(){
 
+    $("svg").remove();
+
     var outerWidth = 500;
     var outerHeight = 500;
     var innerWidth = outerWidth - 30 - 30;
@@ -42,8 +44,14 @@ function upload(evt) {
     var g = svg.append("g")
       .attr("transform", "translate(30, 30)");
 
-    var xScale = d3.scale.linear().range([0, innerWidth]);
-    var yScale = d3.scale.linear().range([innerHeight, 0]);
+    var xScale = $('input[name=xScale]:checked').val() == "linear" ?
+                  d3.scale.linear().range([0, innerWidth]) :
+                  d3.scale.log().range([0, innerWidth]);
+
+    var yScale = $('input[name=yScale]:checked').val() == "linear" ?
+                  d3.scale.linear().range([innerWidth, 0]) :
+                  d3.scale.log().range([innerWidth, 0]);
+
     var rScale = d3.scale.sqrt().range([rMin, rMax]);
 
     for (var i = 1; i < data.length; i++){
