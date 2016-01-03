@@ -71,15 +71,33 @@ function upload(evt) {
       var circles = g.selectAll("circle").data(data);
       circles.enter().append("circle");
 
+      var tooltip = d3.select("body").append("div")
+          .attr("class", "tooltip")
+          .style("opacity", 0);
+
       circles
         .attr("cx", function (d) { return xScale(+d.xColumn); })
         .attr("cy", function (d) { return yScale(+d.yColumn); })
         .attr("r", 5)
-        .attr("class", function(d) { return d.name; });
+        .attr("class", function(d) { return d.name; })
+        .on("mouseover", function(d) {
+          debugger
+             tooltip.transition()
+                .duration(200)
+                .style("opacity", 0.9);
+             tooltip.html("Name: " + d.name + "<br/>" +
+                        $(".xColumn")[0].value + ": " + d.xColumn.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + "<br/>" +
+                        $(".yColumn")[0].value + ": " + d.yColumn.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"))
+                .style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY - 28) + "px");
+            })
+        .on("mouseout", function(d) {
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0);
+        });
 
       circles.exit().remove();
-
-      debugger
 
     }
 
