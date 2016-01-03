@@ -89,11 +89,11 @@ function upload(evt) {
     }
 
     var xAxis = d3.svg.axis().scale(xScale).orient("bottom")
-      .ticks(5)
+      .ticks(3)
       .tickFormat(d3.format("s"))
       .outerTickSize(0);
     var yAxis = d3.svg.axis().scale(yScale).orient("left")
-      .ticks(5)
+      .ticks(3)
       .tickFormat(d3.format("s"))
       .outerTickSize(0);
 
@@ -101,8 +101,8 @@ function upload(evt) {
       xScale.domain(d3.extent(data, function(d) { return +d.xColumn; }));
       yScale.domain(d3.extent(data, function(d) { return +d.yColumn; }));
 
-      xAxisG.call(xAxis);
-      yAxisG.call(yAxis);
+      if ($('input[name=xScale]:checked').val() == "linear") { xAxisG.call(xAxis); }
+      if ($('input[name=yScale]:checked').val() == "linear") { yAxisG.call(yAxis); }
 
       var circles = g.selectAll("circle").data(data);
       circles.enter().append("circle");
