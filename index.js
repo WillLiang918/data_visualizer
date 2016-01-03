@@ -31,18 +31,43 @@ function upload(evt) {
 
     var outerWidth = 500;
     var outerHeight = 500;
-    var innerWidth = outerWidth - 30 - 30;
-    var innerHeight = outerHeight - 30 - 30;
+    var margin = {left: 60, top: 5, right: 5, bottom: 60 };
+    var innerWidth = outerWidth - margin.left - margin.right;
+    var innerHeight = outerHeight - margin.top - margin.bottom;
     var rMin = 1;
     var rMax = 5;
     var parsedData = [];
+    var xAxisLabelText = $(".xColumn")[0].value + " (" +
+                         $('input[name=xScale]:checked').val() + ")";
+    var xAxisLabelOffset = 48;
+    var yAxisLabelText = $(".yColumn")[0].value + " (" +
+                         $('input[name=yScale]:checked').val() + ")";
+    var yAxisLabelOffset = 48;
 
     var svg = d3.select("body").append("svg").
       attr("width", outerWidth)
       .attr("height", outerHeight);
 
     var g = svg.append("g")
-      .attr("transform", "translate(30, 30)");
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var xAxisG = g.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + innerHeight + ")");
+    var yAxisG = g.append("g")
+      .attr("class", "y axis");
+
+    var xAxisLabel = xAxisG.append("text")
+      .style("text-anchor", "middle")
+      .attr("x", innerWidth / 2)
+      .attr("y", xAxisLabelOffset)
+      .attr("class", "label")
+      .text(xAxisLabelText);
+    var yAxisLabel = yAxisG.append("text")
+      .style("text-anchor", "middle")
+      .attr("transform", "translate(-" + yAxisLabelOffset + "," + (innerHeight / 2) + ") rotate(-90)")
+      .attr("class", "label")
+      .text(yAxisLabelText);
 
     var xScale = $('input[name=xScale]:checked').val() == "linear" ?
                   d3.scale.linear().range([0, innerWidth]) :
@@ -63,10 +88,21 @@ function upload(evt) {
       });
     }
 
+    var xAxis = d3.svg.axis().scale(xScale).orient("bottom")
+      .ticks(5)
+      .tickFormat(d3.format("s"))
+      .outerTickSize(0);
+    var yAxis = d3.svg.axis().scale(yScale).orient("left")
+      .ticks(5)
+      .tickFormat(d3.format("s"))
+      .outerTickSize(0);
+
     function render(data) {
       xScale.domain(d3.extent(data, function(d) { return +d.xColumn; }));
-
       yScale.domain(d3.extent(data, function(d) { return +d.yColumn; }));
+
+      xAxisG.call(xAxis);
+      yAxisG.call(yAxis);
 
       var circles = g.selectAll("circle").data(data);
       circles.enter().append("circle");
@@ -81,28 +117,23 @@ function upload(evt) {
         .attr("r", 5)
         .attr("class", function(d) { return d.name; })
         .on("mouseover", function(d) {
-          debugger
-             tooltip.transition()
-                .duration(200)
-                .style("opacity", 0.9);
-             tooltip.html("Name: " + d.name + "<br/>" +
-                        $(".xColumn")[0].value + ": " + d.xColumn.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + "<br/>" +
-                        $(".yColumn")[0].value + ": " + d.yColumn.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"))
-                .style("left", (d3.event.pageX) + "px")
-                .style("top", (d3.event.pageY - 28) + "px");
-            })
+          tooltip.transition()
+            .duration(200)
+            .style("opacity", 0.9);
+          tooltip.html("Name: " + d.name + "<br/>" +
+                      $(".xColumn")[0].value + ": " + d.xColumn.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + "<br/>" +
+                      $(".yColumn")[0].value + ": " + d.yColumn.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"))
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY - 28) + "px");
+        })
         .on("mouseout", function(d) {
-            tooltip.transition()
-                .duration(500)
-                .style("opacity", 0);
-        });
-
+          tooltip.transition()
+            .duration(500)
+            .style("opacity", 0);
+      });
       circles.exit().remove();
-
     }
 
     render(parsedData);
   });
-
-
 }
