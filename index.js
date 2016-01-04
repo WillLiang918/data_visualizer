@@ -1,21 +1,47 @@
 $("#csvfile")[0].addEventListener("change", upload, false);
+$("#sampledata").on("click", function(){
+  upload("sampleData");
+});
 
 function upload(evt) {
-  var data = null;
-  var file = evt.target.files[0];
-  var reader = new FileReader();
-  reader.readAsText(file);
-  reader.onload = function(event) {
-    var csvData = event.target.result;
-    data = $.csv.toArrays(csvData);
-    // if (data && data.length > 0) {
-    //  alert('Imported -' + data.length + '- rows successfully!');
-    // } else {
-    //  alert('No data to import!');
-    // }
+  var data = [[]];
+  var outerWidth = 500;
+  var outerHeight = 500;
+  var xAxisLabelOffset = 48;
+  var yAxisLabelOffset = 48;
+  var titleLabelOffset = 10;
+  var margin = {left: 60, top: (20 + titleLabelOffset), right: 5, bottom: (60) };
+  var innerWidth = outerWidth - margin.left - margin.right;
+  var innerHeight = outerHeight - margin.top - margin.bottom;
+  var rMin = 1;
+  var rMax = 5;
 
+  if (evt === "sampleData") {
+    d3.csv("population.csv", function (sampleData) {
+      data = [[]];
+      for (var key in sampleData[0]) {
+        data[0].push(key);
+      }
+      sampleData.forEach(function(row){
+        var parsedRow = [];
+        for (var key in row) { parsedRow.push(row[key]); }
+        data.push(parsedRow);
+      });
+      createLabels();
+    });
+  } else {
+    var file = evt.target.files[0];
+    var reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = function(event) {
+      var csvData = event.target.result;
+      data = $.csv.toArrays(csvData);
+      createLabels();
+    };
+  }
+
+  function createLabels() {
     data[0].forEach( function(label) {
-
       for (var i = 0; i < 4; i++) {
         var option = document.createElement("option");
         option.text = label;
@@ -23,23 +49,12 @@ function upload(evt) {
         $(".col")[i].appendChild(option);
       }
     });
-  };
+  }
 
   $("#graphcsv").on("click", function(){
 
     $("svg").remove();
 
-    var outerWidth = 500;
-    var outerHeight = 500;
-    var xAxisLabelOffset = 48;
-    var yAxisLabelOffset = 48;
-    var titleLabelOffset = 10;
-    var margin = {left: 60, top: (20 + titleLabelOffset), right: 5, bottom: (60) };
-    var innerWidth = outerWidth - margin.left - margin.right;
-    var innerHeight = outerHeight - margin.top - margin.bottom;
-    console.log(innerHeight);
-    var rMin = 1;
-    var rMax = 5;
     var parsedData = [];
     var xColumnName = $(".xColumnName")[0].value;
     var xColumn = $(".xColumn")[0].value;
