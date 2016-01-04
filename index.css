@@ -5,8 +5,11 @@
 }
 
 svg {
-  border: 1px solid gold;
   margin: auto;
+}
+
+svg * {
+  border: 1px solid blue;
 }
 
 .tooltip {
@@ -21,5 +24,18 @@ svg {
 }
 
 .title {
-  font-size: 20px;
+  text-align: center;
+}
+
+.optional-arugments {
+  margin-bottom: 0px;
+}
+
+.titleLabel {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.label {
+  border: 1px solid blue;
 }
