@@ -19,3 +19,7 @@ svg {
   border-radius: 8px;
   pointer-events: none;
 }
+
+.title {
+  font-size: 20px;
+}

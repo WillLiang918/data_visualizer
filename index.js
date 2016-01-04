@@ -31,7 +31,10 @@ function upload(evt) {
 
     var outerWidth = 500;
     var outerHeight = 500;
-    var margin = {left: 60, top: 5, right: 5, bottom: 60 };
+    var xAxisLabelOffset = 48;
+    var yAxisLabelOffset = 48;
+    var titleLabelOffset = 10;
+    var margin = {left: 60, top: (20 + titleLabelOffset), right: 5, bottom: 60 };
     var innerWidth = outerWidth - margin.left - margin.right;
     var innerHeight = outerHeight - margin.top - margin.bottom;
     var rMin = 1;
@@ -39,14 +42,24 @@ function upload(evt) {
     var parsedData = [];
     var xAxisLabelText = $(".xColumn")[0].value + " (" +
                          $('input[name=xScale]:checked').val() + ")";
-    var xAxisLabelOffset = 48;
     var yAxisLabelText = $(".yColumn")[0].value + " (" +
                          $('input[name=yScale]:checked').val() + ")";
-    var yAxisLabelOffset = 48;
+    var titleLabelText = $(".yColumn")[0].value + " vs " + $(".xColumn")[0].value;
 
     var svg = d3.select("body").append("svg").
       attr("width", outerWidth)
       .attr("height", outerHeight);
+
+    var titleG = svg.append("g")
+      .attr("transform", "translate(0," + titleLabelOffset + ")")
+      .attr("class", "label");
+
+    var titleLabel = titleG.append("text")
+      .style("text-anchor", "middle")
+      .attr("x", outerWidth / 2)
+      .attr("y", titleLabelOffset)
+      .attr("class", "label title")
+      .text(titleLabelText);
 
     var g = svg.append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -74,8 +87,8 @@ function upload(evt) {
                   d3.scale.log().range([0, innerWidth]);
 
     var yScale = $('input[name=yScale]:checked').val() == "linear" ?
-                  d3.scale.linear().range([innerWidth, 0]) :
-                  d3.scale.log().range([innerWidth, 0]);
+                  d3.scale.linear().range([(innerWidth - xAxisLabelOffset), 0]) :
+                  d3.scale.log().range([(innerWidth - xAxisLabelOffset), 0]);
 
     var rScale = d3.scale.sqrt().range([rMin, rMax]);
 
@@ -100,6 +113,7 @@ function upload(evt) {
     function render(data) {
       xScale.domain(d3.extent(data, function(d) { return +d.xColumn; }));
       yScale.domain(d3.extent(data, function(d) { return +d.yColumn; }));
+      rScale.domain(d3.extent(data, function(d) { return +d.rColumn; }));
 
       if ($('input[name=xScale]:checked').val() == "linear") { xAxisG.call(xAxis); }
       if ($('input[name=yScale]:checked').val() == "linear") { yAxisG.call(yAxis); }
@@ -114,7 +128,9 @@ function upload(evt) {
       circles
         .attr("cx", function (d) { return xScale(+d.xColumn); })
         .attr("cy", function (d) { return yScale(+d.yColumn); })
-        .attr("r", 5)
+        .attr("r", (
+          $(".rColumn")[0].value == "default" ? 2 : function (d) { return rScale(+d.rColumn); }
+        ))
         .attr("class", function(d) { return d.name; })
         .on("mouseover", function(d) {
           tooltip.transition()
