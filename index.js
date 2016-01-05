@@ -2,6 +2,9 @@ $("#csvfile")[0].addEventListener("change", upload, false);
 $("#sampledata").on("click", function(){
   upload("sampleData");
 });
+$("#upload").on("click", function(){
+  $("#csvfile")[0].click();
+});
 
 function upload(evt) {
   var data = [[]];
@@ -13,8 +16,6 @@ function upload(evt) {
   var margin = {left: 60, top: (20 + titleLabelOffset), right: 5, bottom: (60) };
   var innerWidth = outerWidth - margin.left - margin.right;
   var innerHeight = outerHeight - margin.top - margin.bottom;
-  var rMin = 1;
-  var rMax = 5;
 
   if (evt === "sampleData") {
     d3.csv("population.csv", function (sampleData) {
@@ -51,7 +52,7 @@ function upload(evt) {
     });
   }
 
-  $("#graphcsv").on("click", function(){
+  $(".graph").on("click", function(){
 
     $("svg").remove();
 
@@ -60,9 +61,12 @@ function upload(evt) {
     var xColumn = $(".xColumn")[0].value;
     var rColumn = $(".rColumn")[0].value;
     var yColumn = $(".yColumn")[0].value;
+    var radius = $(".radius")[0].value;
     var yColumnName = $(".yColumnName")[0].value;
     var labelArugmentName = $(".label-arugment-name")[0].value;
     var labelArugment = $(".label-arugment")[0].value;
+    var rMin = 1;
+    var rMax = (radius === "") ? 5 : +radius;
 
     var xAxisLabelText = (xColumnName === "") ? xColumn : xColumnName;
     var yAxisLabelText = (yColumnName === "") ? yColumn : yColumnName;
@@ -75,37 +79,39 @@ function upload(evt) {
       .attr("width", outerWidth)
       .attr("height", outerHeight);
 
-    var titleG = svg.append("g")
+    var titleG = svg.append("foreignObject")
       .attr("transform", "translate(" + (margin.left / 2) + "," + titleLabelOffset + ")")
+      .attr("width", outerWidth)
       .attr("class", "label");
 
-    var titleLabel = titleG.append("text")
-      .style("text-anchor", "middle")
+    var titleLabel = titleG.append("xhtml:div")
+      // .style("text-anchor", "middle")
       .attr("x", outerWidth / 2)
       .attr("y", titleLabelOffset)
       .attr("class", "label titleLabel")
-      .text(titleLabelText);
+      .html("<b class='yLabel'>" + yAxisLabelText + "</b>" + "&nbsp;vs&nbsp;" +
+            "<b class='xLabel'>" + xAxisLabelText + "</b>");
 
     var g = svg.append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var xAxisG = g.append("g")
-      .attr("class", "x axis")
+      .attr("class", "x axis xLabel")
       .attr("transform", "translate(0," + (innerHeight) + ")");
     var yAxisG = g.append("g")
-      .attr("class", "y axis");
+      .attr("class", "y axis yLabel");
 
     var xAxisLabel = xAxisG.append("text")
       .style("text-anchor", "middle")
       .attr("x", innerWidth / 2)
       .attr("y", xAxisLabelOffset)
-      .attr("class", "label")
+      .attr("class", "label xLabel")
       .text(xAxisLabelText + $('input[name=xScale]:checked').val());
 
     var yAxisLabel = yAxisG.append("text")
       .style("text-anchor", "middle")
       .attr("transform", "translate(-" + yAxisLabelOffset + "," + (innerHeight / 2) + ") rotate(-90)")
-      .attr("class", "label")
+      .attr("class", "label yLabel")
       .text(yAxisLabelText + $('input[name=yScale]:checked').val());
 
     var xScale = $('input[name=xScale]:checked').val() === "" ?
@@ -163,9 +169,10 @@ function upload(evt) {
           tooltip.transition()
             .duration(200)
             .style("opacity", 0.9);
-          tooltip.html(labelArugmentText + ": " + d.label + "<br/>" +
-                      xAxisLabelText + ": " + d.xColumn.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + "<br/>" +
-                      yAxisLabelText + ": " + d.yColumn.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"))
+          tooltip.html(
+                      "<b class='rLabel'>" + labelArugmentText + "</b>: " + d.label + "<br/>" +
+                      "<b class='xLabel'>" + xAxisLabelText + "</b>: " + d.xColumn.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + "<br/>" +
+                      "<b class='yLabel'>" + yAxisLabelText + "</b>: " + d.yColumn.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"))
             .style("left", (d3.event.pageX) + "px")
             .style("top", (d3.event.pageY - 28) + "px");
         })

@@ -1,22 +1,68 @@
+html, body, b, h4 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  font: inherit;
+  text-decoration: inherit;
+  text-align: inherit;
+  color: inherit;
+
+  background: transparent;
+}
+
+.csv-button {
+  margin-top: 3px;
+  font-size: 20px;
+}
+
+.textbox {
+  width: 100px;
+  padding-left: 10px;
+}
+
+.radius {
+  width: 20px;
+}
+
 .toolbar {
   border: 1px solid black;
   float: left;
-  padding: 10px 50px 10px 10px;
+  padding: 15px 15px 40px 15px;
+  margin-right: 60px;
+  margin-left: 30px;
+}
+
+.xLabel {
+  color: #5DA5DA;
+  fill: #5DA5DA;
+}
+
+.yLabel {
+  color: #F15854;
+  fill: #F15854
+}
+
+.rLabel {
+  color: #B2912F;
+}
+
+.graph {
+  width: 100%;
+  font-size: 20px;
+  margin: auto;
+  text-align: center;
 }
 
 svg {
   margin: auto;
 }
 
-svg * {
-  border: 1px solid blue;
-}
-
 .tooltip {
   position: absolute;
   text-align: center;
   padding: 2px;
-  font: 12px sans-serif;
+  font: 15px sans-serif;
   background: lightsteelblue;
   border: 0px;
   border-radius: 8px;
@@ -27,6 +73,10 @@ svg * {
   text-align: center;
 }
 
+.titleLabel {
+  text-align: center;
+}
+
 .optional-arugments {
   margin-bottom: 0px;
 }
@@ -34,8 +84,4 @@ svg * {
 .titleLabel {
   font-size: 16px;
   font-weight: bold;
-}
-
-.label {
-  border: 1px solid blue;
 }

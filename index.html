@@ -16,37 +16,41 @@
   <div class="toolbar">
 
     <b>CSV File</b><br>
-    <input type="file" id="csvfile" accept=".csv"><br>
-    <input type="button" id="sampledata" value="Sample Data">
+    <input type="button" class="csv-button" id="sampledata" value="Use Sample Data"> or
+    <input type="button" class="csv-button" id="upload" value="Upload A CSV File">
+    <input hidden type="file" id="csvfile" accept=".csv">
     <br>
     <br>
 
-    <b>X Column </b><select class="col xColumn"></select>
-    Name <input type="text" class="xColumnName" placeholder="optional">
+    <b class="xLabel">X </b><select class="col xColumn"></select>
+    <b class="xLabel"> Axis Title </b>
+    <input type="text" class="xColumnName textbox" placeholder="optional">
     <br>
     <input type="radio" name="xScale" value="" checked>Linear
     <input type="radio" name="xScale" value=" - logarithmic">Logarithmic
     <br>
     <br>
 
-    <b>Y Column </b><select class="col yColumn"></select>
-    Name  <input type="text" class="yColumnName" placeholder="optional">
+    <b class="yLabel">Y </b><select class="col yColumn"></select>
+    <b class="yLabel"> Axis Title </b>
+    <input type="text" class="yColumnName textbox" placeholder="optional">
     <br>
     <input type="radio" name="yScale" value="" checked>Linear
     <input type="radio" name="yScale" value=" - logarithmic">Logarithmic
-    <br>
-
-    <h4 class="optional-arugments">Optional Arugments</h4>
-    <b>Label </b>
-    <select class="col label-arugment"><option value="default">Default</option></select>
-    Name <input type="text" class="label-arugment-name" placeholder="optional">
-    <br>
-
-    <b>Radius </b>
-    <select class="col rColumn"><option value="default">Default</option></select>
     <br><br>
 
-    <button type="button" id="graphcsv">Graph</button>
+    <h4 class="optional-arugments rLabel">Optional Arugments</h4>
+    <b class="rLabel">Label </b>
+    <select class="col label-arugment"><option value="default">Default</option></select>
+    <b class="rLabel">Name </b><input type="text" class="label-arugment-name  textbox" placeholder="optional">
+    <br>
+
+    <b class="rLabel">Radius </b>
+    <select class="col rColumn"><option value="default">Default</option></select>
+    <b class="rLabel">Max Radius </b><input type="text" class="radius textbox" placeholder=5>
+    <br><br>
+
+    <button type="button" class="graph">Graph</button>
   </div>
 
   <script src="index.js"></script>
