@@ -8,7 +8,7 @@ $("#upload").on("click", function(){
 
 function upload(evt) {
   var data = [[]];
-  var outerWidth = 500;
+  var outerWidth = $(window).width() - 500;
   var outerHeight = 500;
   var xAxisLabelOffset = 48;
   var yAxisLabelOffset = 48;
@@ -106,19 +106,19 @@ function upload(evt) {
       .attr("x", innerWidth / 2)
       .attr("y", xAxisLabelOffset)
       .attr("class", "label xLabel")
-      .text(xAxisLabelText + $('input[name=xScale]:checked').val());
+      .text(xAxisLabelText);
 
     var yAxisLabel = yAxisG.append("text")
       .style("text-anchor", "middle")
       .attr("transform", "translate(-" + yAxisLabelOffset + "," + (innerHeight / 2) + ") rotate(-90)")
       .attr("class", "label yLabel")
-      .text(yAxisLabelText + $('input[name=yScale]:checked').val());
+      .text(yAxisLabelText);
 
-    var xScale = $('input[name=xScale]:checked').val() === "" ?
+    var xScale = typeof $('input[name=xScale]:checked').val() === "undefined" ?
                   d3.scale.linear().range([0, innerWidth]) :
                   d3.scale.log().range([0, innerWidth]);
 
-    var yScale = $('input[name=yScale]:checked').val() === "" ?
+    var yScale = typeof $('input[name=yScale]:checked').val() === "undefined" ?
                   d3.scale.linear().range([(innerHeight), 0]) :
                   d3.scale.log().range([(innerHeight), 0]);
 
@@ -148,8 +148,8 @@ function upload(evt) {
       yScale.domain(d3.extent(data, function(d) { return +d.yColumn; }));
       rScale.domain(d3.extent(data, function(d) { return +d.rColumn; }));
 
-      if ($('input[name=xScale]:checked').val() === "") { xAxisG.call(xAxis); }
-      if ($('input[name=yScale]:checked').val() === "") { yAxisG.call(yAxis); }
+      if (typeof $('input[name=xScale]:checked').val() === "undefined") { xAxisG.call(xAxis); }
+      if (typeof $('input[name=yScale]:checked').val() === "undefined") { yAxisG.call(yAxis); }
 
       var circles = g.selectAll("circle").data(data);
       circles.enter().append("circle");

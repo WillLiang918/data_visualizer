@@ -15,40 +15,50 @@
 
   <div class="toolbar">
 
-    <b>CSV File</b><br>
-    <input type="button" class="csv-button" id="sampledata" value="Use Sample Data"> or
-    <input type="button" class="csv-button" id="upload" value="Upload A CSV File">
-    <input hidden type="file" id="csvfile" accept=".csv">
-    <br>
+    <h2 class="how-to-use">How To Use</h2>
+
+    <b class="step-number">1)</b>
+    <div class="step-input">
+      <b class="steps">Select a CSV File:</b><br>
+      <input type="button" class="csv-button" id="sampledata" value="Use Sample Data"> or
+      <input type="button" class="csv-button" id="upload" value="Upload A CSV File">
+      <input hidden type="file" id="csvfile" accept=".csv">
+    </div>
     <br>
 
-    <b class="xLabel">X </b><select class="col xColumn"></select>
-    <b class="xLabel"> Axis Title </b>
-    <input type="text" class="xColumnName textbox" placeholder="optional">
-    <br>
-    <input type="radio" name="xScale" value="" checked>Linear
-    <input type="radio" name="xScale" value=" - logarithmic">Logarithmic
-    <br>
-    <br>
-
-    <b class="yLabel">Y </b><select class="col yColumn"></select>
-    <b class="yLabel"> Axis Title </b>
-    <input type="text" class="yColumnName textbox" placeholder="optional">
-    <br>
-    <input type="radio" name="yScale" value="" checked>Linear
-    <input type="radio" name="yScale" value=" - logarithmic">Logarithmic
-    <br><br>
-
-    <h4 class="optional-arugments rLabel">Optional Arugments</h4>
-    <b class="rLabel">Label </b>
-    <select class="col label-arugment"><option value="default">Default</option></select>
-    <b class="rLabel">Name </b><input type="text" class="label-arugment-name  textbox" placeholder="optional">
+    <b class="step-number">2)</b>
+    <div class="step-input xLabel">
+      <b class="steps">Select a X Column </b><select class="col xColumn"></select><br>
+      <b class=""> Axis Title: </b>
+      <input type="text" class="xColumnName textbox" placeholder="optional">
+      <br>
+      <input type="checkbox" name="xScale" value=" - logarithmic">Logarithmic Scale
+    </div>
     <br>
 
-    <b class="rLabel">Radius </b>
-    <select class="col rColumn"><option value="default">Default</option></select>
-    <b class="rLabel">Max Radius </b><input type="text" class="radius textbox" placeholder=5>
-    <br><br>
+    <b class="step-number">3)</b>
+    <div class="step-input yLabel">
+      <b class="steps">Select a Y Column </b><select class="col yColumn"></select><br>
+      <b class=""> Axis Title: </b>
+      <input type="text" class="yColumnName textbox" placeholder="optional">
+      <br>
+      <input type="checkbox" name="yScale" value=" - logarithmic">Logarithmic Scale
+      <br><br>
+    </div>
+
+    <b class="step-number">4)</b>
+    <div class="step-input">
+      <h4 class="optional-arugments rLabel steps">Optional Arugments</h4>
+      <b class="rLabel">Label </b>
+      <select class="col label-arugment"><option value="default">Default</option></select>
+      <b class="rLabel"></b><input type="text" class="label-arugment-name  textbox" placeholder="optional title">
+      <br>
+
+      <b class="rLabel">Radius </b>
+      <select class="col rColumn"><option value="default">Default</option></select>
+      <b class="rLabel">Max Radius: </b><input type="text" class="radius textbox" placeholder=5>
+      <br>
+    </div>
 
     <button type="button" class="graph">Graph</button>
   </div>
