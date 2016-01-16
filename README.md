@@ -1,10 +1,10 @@
 # Data Visualizer
 
-[Link to App][live]
+[LIVE][live]
 
 [live]: http://www.williamliang.tech/data_visualizer/
 
-A modern take on asteroids with upgrades, explosions, and custom AI ships.
+A quick and easy way to visualize your data!
 
 ## How To Use
 1. Load a datset
